@@ -6,8 +6,10 @@ import pandas as pd
 import os
 
 BASE_URL = "https://books.toscrape.com/"
-DATA_DIR = "/tmp"
+DATA_DIR = "tmp"
 CSV_PATH = os.path.join(DATA_DIR, "books.csv")
+
+os.makedirs(DATA_DIR, exist_ok=True)
 
 def extract_books(pages=1):
     books = []
@@ -49,6 +51,14 @@ def extract_books(pages=1):
             })
             book_id += 1
 
-    os.makedirs(DATA_DIR, exist_ok=True)
-    pd.DataFrame(books).to_csv(CSV_PATH, index=False)
+        next_link = soup.select_one("li.next a")
+        if next_link:
+            next_url = BASE_URL + "catalogue/" + next_link["href"]
+        else:
+            break
+
+    return books
+        #return books
+    #pd.DataFrame(books).to_csv(CSV_PATH, index=False)
+
 

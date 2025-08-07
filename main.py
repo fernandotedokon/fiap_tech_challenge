@@ -3,7 +3,7 @@
 from fastapi import FastAPI, HTTPException, Query
 from app.scraper import extract_books
 from app.models import Book
-from app.utils import load_books, get_book_by_id, search_books, get_categories, get_stats_overview, get_stats_by_category, get_top_rated_books
+from app.utils import load_books, salvar_csv, get_book_by_id, search_books, get_categories, get_stats_overview, get_stats_by_category, get_top_rated_books
 import os
 
 app = FastAPI(title="Biblioteca API", version="1.0")
@@ -13,11 +13,15 @@ app = FastAPI(title="Biblioteca API", version="1.0")
 def extrair_e_salvar(pages: int):
     try:
         if (pages >= 0 and pages <= 10) or pages == 50:
-            extract_books(pages=pages)
-            df = load_books()
-            return {"status": "ok", "books_count": len(df)}
+            books = extract_books(pages=pages)
         else:
             raise HTTPException(status_code=400, detail="Número de páginas deve ser entre 1 e 10 ou 50 para extrair todas as paginas")
+        salvar_csv(books)
+        return {"message": f"{len(books)} livros salvos com sucesso."}
+            #df = load_books()
+            #return {"status": "ok", "books_count": len(df)}
+        #else:
+            #raise HTTPException(status_code=400, detail="Número de páginas deve ser entre 1 e 10 ou 50 para extrair todas as paginas")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

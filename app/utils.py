@@ -3,12 +3,16 @@
 import pandas as pd
 import os
 
-DATA_DIR = "/tmp"
+DATA_DIR = "tmp"
 CSV_PATH = os.path.join(DATA_DIR, "books.csv")
 
+os.makedirs(DATA_DIR, exist_ok=True)
 
 def load_books():
-    return pd.read_csv(CSV_PATH)
+    if not os.path.exists(CSV_PATH):
+        return []
+    #return pd.read_csv(CSV_PATH)
+    return pd.read_csv(CSV_PATH).to_dict(orient="records")
 
 
 def get_book_by_id(book_id: int):
@@ -64,4 +68,6 @@ def get_top_rated_books():
     return top_books.to_dict(orient="records")
 
 
-
+def salvar_csv(books):
+    df = pd.DataFrame(books)
+    df.to_csv(CSV_PATH, index=False)
