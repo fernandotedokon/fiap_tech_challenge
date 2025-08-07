@@ -49,6 +49,6 @@ def extract_books(pages=1):
             })
             book_id += 1
 
-    os.makedirs("data", exist_ok=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
     pd.DataFrame(books).to_csv(CSV_PATH, index=False)
 
