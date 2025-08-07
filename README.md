@@ -17,7 +17,7 @@ biblioteca/
 │   ├── scraper.py         # Scraper de livros e utilitários de unificação
 │   ├── models.py          # Modelos ML serializados
 │   └── utils.py           # Funções auxiliares auxiliam na consulta das informações
-├── data/
+├── tmp/
 │   └── books.csv          # CSVs exportados e unificados
 ├── main.py                # Inicializador do pipeline e da API
 ├── requirements.txt       # Dependências do projeto com as bibliotecas utilizada
@@ -31,8 +31,8 @@ biblioteca/
 ### 1. Clone o repositório
 
 ```bash
-git clone <https://github.com/fernandotedokon/fiap-tech-challenge.git>
-cd fiap-tech-challenge
+git clone <https://github.com/fernandotedokon/fiap_tech_challenge.git>
+cd fiap_tech_challenge
 ```
 
 ### 2. Crie e ative um ambiente virtual
@@ -57,9 +57,13 @@ uvicorn main:app --reload
 
 ### 5. Swagger - Verificar todas as rotas criadas funcionalidades disponiveis
 
-No swagger você poderá verificar e executar todas as rotas criadas.
+Local: No swagger você poderá verificar e executar todas as rotas criadas.
 ```bash
 http://127.0.0.1:8000/docs
+```
+Produção: No swagger você poderá verificar e executar todas as rotas criadas.
+```bash
+https://fiaptechchallenge-99g13j3g9-fernandos-projects-a3731ebd.vercel.app/docs
 ```
 
 ### 6. Execute o Web Scraping executando a rota (opcional, se já houver CSV)
@@ -79,7 +83,7 @@ Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`
 
 | Método | Rota                                    | Descrição |
 |--------|-----------------------------------------|-----------|
-| GET    | /api/v1/extrair/{pages}                 | Extrai e salva livros de acordo número de páginas informado |
+| GET    | /api/v1/extract/{pages}                 | Extrai e salva livros de acordo número de páginas informado |
 | GET    | /api/v1/health                          | Verifica status da API |
 | GET    | /api/v1/books                           | Lista todos os livros |
 | GET    | /api/v1/books/{id}                      | Detalha um livro |
@@ -143,7 +147,7 @@ Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`
 
 ---
 📁 Extrair Dados
-#### /api/v1/extrair/{pages}
+#### /api/v1/extract/{pages}
 - Esse método extrai e salva livros de acordo com o número de páginas informado. Você pode solicitar entre 1 a 10 páginas ou exatamente 50 páginas para extrair todos os dados. Ele chama uma função que faz a extração, carrega os livros e retorna a quantidade de livros extraídos.
 
 ---
@@ -184,10 +188,10 @@ Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`
 ---
 📊 Fornece todos os livros com avaliação máxima
 #### /api/v1/books/top-rated
-- Mostra os melhores livros da base.
+- Mostra os melhores livros da biblioteca.
 
 ---
-📊 Buscar livros que estão dentro de uma faixa de preço específica
+📊 Buscar livros que estão dentro de uma faixa de preço específico
 #### /api/v1/books/price-range
 - Você pode informar um valor mínimo e um valor máximo, e ela vai retornar uma lista de livros cujo preço está entre esses dois valores.
 
@@ -211,7 +215,7 @@ Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`
       └──────┬─────────┘
              ▼  (CSV: pandas)
       ┌────────────────────┐
-      │  data/books.csv    │
+      │  tmp/books.csv    │
       └──────┬─────────────┘
              ▼
       ┌────────────────────┐
@@ -235,7 +239,7 @@ Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`
 | Componente      | Escalável? | Estratégia                                                |
 | --------------- | ---------- | --------------------------------------------------------- |
 | Scraper         | ✅          | Tornar assíncrono, paralelizar scraping por páginas       |
-| Armazenamento   | ⚠️ CSV     | Migrar para PostgreSQL, MongoDB, ou S3                    |
+| Armazenamento   | ⚠️ CSV     | Migrar para PostgreSQL, MongoDB, ou AWS S3                    |
 | API FastAPI     | ✅          | Pode escalar horizontalmente com Gunicorn/Uvicorn         |
 | Modelo de Dados | ✅          | Pydantic permite validação forte                          |
 | Deploy          | ✅          | Docker, Kubernetes, serverless (AWS Lambda + API Gateway) |
@@ -274,7 +278,7 @@ Objetivo: Cientistas de dados querem explorar livros para entender preferências
 
 ```bash
 @app.post("/api/v1/predict")
-def predict(data: Book):
+def predict(tmp: Book):
     # Preprocessar dados
     # Carregar modelo treinado
     # Retornar resultado
@@ -285,7 +289,7 @@ def predict(data: Book):
 ## 📈 Sugestão para Pipeline de ML
 
 ```bash
-data/books.csv ──> Jupyter Notebook ──> Modelo treinado (.pkl/.joblib)
+tmp/books.csv ──> Jupyter Notebook ──> Modelo treinado (.pkl/.joblib)
                                            │
 FastAPI ── /predict ────────> Carrega modelo e retorna inferência
 ```

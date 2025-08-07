@@ -1,12 +1,10 @@
-# app/scraper.py
-
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import os
 
 BASE_URL = "https://books.toscrape.com/"
-DATA_DIR = "tmp"
+DATA_DIR = "/tmp"
 CSV_PATH = os.path.join(DATA_DIR, "books.csv")
 
 os.makedirs(DATA_DIR, exist_ok=True)
@@ -58,7 +56,5 @@ def extract_books(pages=1):
             break
 
     return books
-        #return books
-    #pd.DataFrame(books).to_csv(CSV_PATH, index=False)
 
 
