@@ -72,7 +72,7 @@ http://127.0.0.1:8000/docs
 ```
 - **Ambiente Produção**
 ```bash
-https://fiaptechchallenge-71bvwjs0f-fernandos-projects-a3731ebd.vercel.app/docs
+https://fiaptechchallenge-kejf3zeg2-fernandos-projects-a3731ebd.vercel.app/docs
 ```
 
 ### 6. Execute o Web Scraping executando a rota (opcional, se já houver CSV)
@@ -106,8 +106,7 @@ Essa funcionalidade irá baixar os dados dos livros e gerar o arquivo CSV em `tm
 |--------|-----------------------------------------|-----------|
 | GET    | /api/v2/stats/overview                  | Estatísticas gerais da coleção (total de livros, preço médio, distribuição de ratings) |
 | GET    | /api/v2/stats/categories                | Estatísticas detalhadas por categoria (quantidade de livros, preços por categoria) |
-| GET    | /api/v2/books/top-rated                | Lista os livros com melhor avaliação
-(rating mais alto) |
+| GET    | /api/v2/books/top-rated                | Lista os livros com melhor avaliação (rating mais alto) |
 | GET    | /api/v2/books/price-range                | Filtra livros dentro de uma faixa de preço específica |
 
 
