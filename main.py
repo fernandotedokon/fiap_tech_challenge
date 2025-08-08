@@ -5,7 +5,7 @@ from app.utils import load_books, get_list_categories, salvar_csv, get_book_by_i
 import pandas as pd
 import os
 
-app = FastAPI(title="Biblioteca API", version="1.0")
+app = FastAPI(title="Books Scraping - Desafio Tech API", version="1.0 powered by Group 44, 6MLET")
 
 @app.get("/api/v1/extract/{pages}")
 def extract_and_save(pages: int):
@@ -43,22 +43,22 @@ def list_categories():
 
 
 # Endpoints de Insights
-@app.get("/api/v1/stats/overview")
+@app.get("/api/v2/stats/overview")
 def stats_overview():
     return get_stats_overview()
 
 
-@app.get("/api/v1/stats/categories")
+@app.get("/api/v2/stats/categories")
 def stats_by_category():
     return get_stats_by_category()
 
 
-@app.get("/api/v1/books/top-rated")
+@app.get("/api/v2/books/top-rated")
 def top_rated_books():
     return get_top_rated_books()
 
 
-@app.get("/api/v1/books/price-range")
+@app.get("/api/v2/books/price-range")
 def books_by_price_range(min: float, max: float):
     data = load_books()
     if not data:

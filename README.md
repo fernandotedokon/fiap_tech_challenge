@@ -1,12 +1,21 @@
-# 📚 Biblioteca de livros
+# 📚 Desafio Tech FIAP - Books Scraping & ML API
 
-Esta API implementada em Python com FastAPI extrai informações de livros do site [Books to Scrape](https://books.toscrape.com/), armazena os dados no arquivo "books.csv" e fornece rotas para consulta.
+Este projeto realiza scraping de dados de livros, extrai informações do site [Books to Scrape](https://books.toscrape.com/), unificando sendo armazenado os dados no arquivo "books.csv" e processamento dos dados expõe uma API RESTful.
 
 
 ## 📦 Requisitos
 
 - Python 3.8+
 - pip
+
+## 🚀 Tecnologias Utilizadas
+
+- **FastAPI** — Framework web moderno, rápido para criar APIs RESTful com Python e gera documentação Swagger no padrão OpenAPI 3.0.
+- **Uvicorn** — Servidor ASGI ultrarrápido usado para rodar aplicações FastAPI.
+- **Requests** — Biblioteca para fazer requisições HTTP de forma simples.
+- **BeautifulSoup4** — Ferramenta para fazer parsing (análise) de HTML/XML — usada em web scraping.
+- **Pandas** — Biblioteca para análise e manipulação de dados estruturados (como planilhas, CSV, tabelas).
+
 
 
 ## 🗂️ Estrutura do Projeto
@@ -55,15 +64,15 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-### 5. Swagger - Verificar todas as rotas criadas funcionalidades disponiveis
+### 5. Swagger - Verificar todas as rotas criadas funcionalidades disponiveis padrões e de estatísticas
 
-Local: No swagger você poderá verificar e executar todas as rotas criadas.
+- **Ambiente Local**
 ```bash
 http://127.0.0.1:8000/docs
 ```
-Produção: No swagger você poderá verificar e executar todas as rotas criadas.
+- **Ambiente Produção**
 ```bash
-https://fiaptechchallenge-99g13j3g9-fernandos-projects-a3731ebd.vercel.app/docs
+https://fiaptechchallenge-71bvwjs0f-fernandos-projects-a3731ebd.vercel.app/docs
 ```
 
 ### 6. Execute o Web Scraping executando a rota (opcional, se já houver CSV)
@@ -73,13 +82,13 @@ https://fiaptechchallenge-99g13j3g9-fernandos-projects-a3731ebd.vercel.app/docs
 
 Esse método extrai e salva livros de acordo com o número de páginas informado. Você pode solicitar entre 1 a 10 páginas ou exatamente 50 páginas para extrair todos os dados. Ele chama uma função que faz a extração, carrega os livros e retorna a quantidade de livros extraídos.
 ```
-Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`.
+Essa funcionalidade irá baixar os dados dos livros e gerar o arquivo CSV em `tmp/books.csv`.
 
 
 ---
 
 
-## 📡 Principais Endpoints Core
+## 📡 Endpoints Core
 
 | Método | Rota                                    | Descrição |
 |--------|-----------------------------------------|-----------|
@@ -91,21 +100,21 @@ Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`
 | GET    | /api/v1/categories                      | Lista categorias únicas |
 
 
-## 📡 Endpoints de Insights
+## 📡 Endpoints Insights
 
 | Método | Rota                                    | Descrição |
 |--------|-----------------------------------------|-----------|
-| GET    | /api/v1/stats/overview                  | Estatísticas gerais da coleção (total de livros, preço médio, distribuição de ratings) |
-| GET    | /api/v1/stats/categories                | Estatísticas detalhadas por categoria (quantidade de livros, preços por categoria) |
-| GET    | /api/v1/books/top-rated                | Lista os livros com melhor avaliação
+| GET    | /api/v2/stats/overview                  | Estatísticas gerais da coleção (total de livros, preço médio, distribuição de ratings) |
+| GET    | /api/v2/stats/categories                | Estatísticas detalhadas por categoria (quantidade de livros, preços por categoria) |
+| GET    | /api/v2/books/top-rated                | Lista os livros com melhor avaliação
 (rating mais alto) |
-| GET    | /api/v1/books/price-range                | Filtra livros dentro de uma faixa de preço específica |
+| GET    | /api/v2/books/price-range                | Filtra livros dentro de uma faixa de preço específica |
 
 
 
 
 ## 🧠 scraper.py: Extração dos livros
-- Realiza a extração de dados (web scraping) do site "https://books.toscrape.com/". Coleta informações sobre os livros disponíveis na página, como título, preço, disponibilidade, avaliação, categoria, URL da imagem e detalhes específicos de cada livro. Verifica uma ou mais páginas do site (dependendo do parâmetro pages), extrai os dados de cada livro listado, acessa a página de detalhes de cada um para obter informações adicionais, e então salva tudo em um arquivo CSV chamado "books.csv". Faz a coleta e organização das informações de livros de forma automatizada.
+- Realiza a extração de dados (web scraping) do site "https://books.toscrape.com/". Coleta informações sobre os livros disponíveis na página, como título, preço, disponibilidade, avaliação, categoria, URL da imagem e detalhes específicos de cada livro. Verifica uma ou mais páginas do site (dependendo do parâmetro pages), extrai os dados de cada livro listado, acessa a página de detalhes de cada um para obter informações adicionais, e então salva tudo em um arquivo CSV "books.csv". Faz a coleta e organização das informações de livros de forma automatizada.
 
 
 ## 📦 models.py Modelos da API
@@ -113,9 +122,7 @@ Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`
 
 
 ## 🛠 utils.py: Funções auxiliares
-- Os métodos do arquivo utils.py são funções auxiliares que ajudam a manipular e consultar uma base de dados de livros armazenada em um arquivo CSV.
-
-
+- Os métodos do arquivo utils.py são funções auxiliares que ajudam a manipular e consultar uma base de dados de livros armazenada no arquivo CSV.
 
 #### 1. load_books(): 
 - Carrega todos os livros do arquivo CSV e retorna um DataFrame do pandas com esses dados.
@@ -157,7 +164,7 @@ Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`
 
 ---
 📚 Listar Todos os Livros
-#### /api/v/books
+#### /api/v1/books
 - Aqui você consegue listar todos os livros disponíveis na sua biblioteca. Ela retorna uma lista com os detalhes de cada livro.
 
 ---
@@ -177,22 +184,22 @@ Isso irá baixar os dados dos livros e gerar os arquivos CSV em `data/books.csv`
 
 ---
 📊 Visão geral sobre uma coleção de livros
-#### /api/v1/stats/overview
-- É uma maneira bem prática de obter uma visão rápida e resumida sobre os livros que estão no sistema
+#### /api/v2/stats/overview
+- É uma maneira bem prática de obter uma visão rápida e resumida sobre os livros que estão no sistema.
 
 ---
 📊 Fornece estatísticas por categoria
-#### /api/v1/stats/categories
+#### /api/v2/stats/categories
 - Muito útil para dashboards ou análises por área temática, retorna a quantidade de livros, preço médio, máximo e mínimo por categoria.
 
 ---
 📊 Fornece todos os livros com avaliação máxima
-#### /api/v1/books/top-rated
+#### /api/v2/books/top-rated
 - Mostra os melhores livros da biblioteca.
 
 ---
 📊 Buscar livros que estão dentro de uma faixa de preço específico
-#### /api/v1/books/price-range
+#### /api/v2/books/price-range
 - Você pode informar um valor mínimo e um valor máximo, e ela vai retornar uma lista de livros cujo preço está entre esses dois valores.
 
 
