@@ -1,4 +1,5 @@
-# 📚 Desafio Tech FIAP - Books Scraping & ML API
+# 📚 Desafio Tech FIAP - Books Scraping & ML API  
+**Powered by Group 44, 6MLET**
 
 Este projeto realiza scraping de dados de livros, extrai informações do site [Books to Scrape](https://books.toscrape.com/), unificando sendo armazenado os dados no arquivo "books.csv" e processamento dos dados expõe uma API RESTful.
 
@@ -23,13 +24,15 @@ Este projeto realiza scraping de dados de livros, extrai informações do site [
 ```
 biblioteca/
 ├── app/
-│   ├── scraper.py         # Scraper de livros e utilitários de unificação
-│   ├── models.py          # Modelos ML serializados
-│   └── utils.py           # Funções auxiliares auxiliam na consulta das informações
+│   ├── scraper.py            # Scraper de livros e utilitários de unificação
+│   ├── models.py             # Modelos ML serializados
+│   └── utils.py              # Funções auxiliares auxiliam na consulta das informações
 ├── tmp/
-│   └── books.csv          # CSVs exportados e unificados
-├── main.py                # Inicializador do pipeline e da API
-├── requirements.txt       # Dependências do projeto com as bibliotecas utilizada
+│   └── books.csv             # CSVs exportados e unificados
+├── video/
+│   └── apresentation.webm    # Video com apresentação do projeto desenvolvido
+├── main.py                   # Inicializador do pipeline e da API
+├── requirements.txt          # Dependências do projeto com as bibliotecas utilizada
 └── README.md
 ```
 
@@ -299,3 +302,7 @@ tmp/books.csv ──> Jupyter Notebook ──> Modelo treinado (.pkl/.joblib)
                                            │
 FastAPI ── /predict ────────> Carrega modelo e retorna inferência
 ```
+
+## 🎬 Video de Apresentação do projeto
+
+- É apresentado a necessidade e a demonstração da arquitetura e técnica, realizando pipeline de dados da API em produção, todas as rotas e funcionalidades desenvolvidas para atender a necessidade do cliente e dos cientista de dados para desenvolvimento dos dashboard.
